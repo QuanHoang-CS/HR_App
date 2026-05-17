@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using net_core_web_api.Data;
 using net_core_web_api.Models.Domain;
 using net_core_web_api.Models.DTO;
+using System.Diagnostics.Metrics;
 
 namespace net_core_web_api.Controllers
 {
@@ -42,9 +43,16 @@ namespace net_core_web_api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetById(int id)
+        public IActionResult GetById(string id)
         {
-            throw new NotImplementedException();
+            var country = _dbContext.Countries.FirstOrDefault(x => x.CountryId == id);
+            var countryDto = new CountryDto()
+            {
+                CountryId = country.CountryId,
+                CountryName = country.CountryName,
+                RegionId = country.RegionId,
+            };
+            return Ok(countryDto);
         }
 
         [HttpGet]
