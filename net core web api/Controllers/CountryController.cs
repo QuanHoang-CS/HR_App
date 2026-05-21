@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
-using net_core_web_api.Data;
+using net_core_web_api.Data.Context;
 using net_core_web_api.Models.Domain;
 using net_core_web_api.Models.DTO;
 using System.Diagnostics.Metrics;
@@ -42,19 +42,33 @@ namespace net_core_web_api.Controllers
             return Ok(countryDto);
         }
 
+        // GET: https://localhost:portnumber/api/Country/{id}
+        // When we pass an id "{id}" after the urll: https://localhost:portnumber/api/Country/:, the inputed id will be mapped
+        // to the input parameter of GetById()
+        // Without [Route...] attribute, it will leads to error 500 since we have 2 [HttpGet] elements with the same route.
         [HttpGet]
+        [Route("{id}")]
         public IActionResult GetById(string id)
         {
             var country = _dbContext.Countries.FirstOrDefault(x => x.CountryId == id);
-            var countryDto = new CountryDto()
+            CountryDto countryDto;
+            if(country == null)
             {
-                CountryId = country.CountryId,
-                CountryName = country.CountryName,
-                RegionId = country.RegionId,
-            };
+                return NotFound($"Country with id \"{id}\" not found!");
+            }
+            else
+            {
+                countryDto = new CountryDto()
+                {
+                    CountryId = country.CountryId,
+                    CountryName = country.CountryName,
+                    RegionId = country.RegionId,
+                };
+            }
+            
             return Ok(countryDto);
         }
-
+        /*
         [HttpGet]
         public IActionResult GetByName(string countryname)
         {
@@ -108,7 +122,7 @@ namespace net_core_web_api.Controllers
         {
             throw new NotImplementedException();
         }
-
+        */
 
     }
 }
