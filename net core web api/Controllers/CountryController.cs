@@ -80,7 +80,7 @@ namespace net_core_web_api.Controllers
         {
             throw new NotImplementedException();
         }
-
+        */
         [HttpPost]
         public IActionResult CreateCountry(string countryName, string countryCode, int countryId)
         {
@@ -88,11 +88,11 @@ namespace net_core_web_api.Controllers
         }
 
         [HttpPatch]
-        public IActionResult UpdateByName(string countryName, Countries newCountry)
+        public IActionResult UpdateByName(string countryName, Country newCountry)
         {
             throw new NotImplementedException();
         }
-
+        /*
         [HttpPatch]
         public IActionResult UpdateById(int countryId, Countries newCountry)
         {
