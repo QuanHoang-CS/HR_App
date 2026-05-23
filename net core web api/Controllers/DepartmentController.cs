@@ -24,5 +24,12 @@ namespace net_core_web_api.Controllers
 
             return Ok(departments);
         }
+
+        [HttpGet("id")]
+        public ActionResult GetDepartmentById(int id)
+        {
+            var department = _dbcontext.Departments.SingleOrDefault(x => x.DepartmentId == id);
+            return Ok(department);
+        }
     }
 }

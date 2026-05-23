@@ -4,9 +4,9 @@ using net_core_web_api.Models.Domain;
 
 namespace net_core_web_api.Data.Configurations
 {
-    public class JobEntityConfiguration : IEntityTypeConfiguration<Jobs>
+    public class JobEntityConfiguration : IEntityTypeConfiguration<Job>
     {
-        public void Configure(EntityTypeBuilder<Jobs> builder)
+        public void Configure(EntityTypeBuilder<Job> builder)
         {
             builder.HasKey("JobId");
 
