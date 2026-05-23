@@ -1,4 +1,7 @@
 
+using Microsoft.EntityFrameworkCore;
+using net_core_web_api.Data.Context;
+
 namespace net_core_web_api
 {
     public class Program
@@ -25,7 +28,11 @@ namespace net_core_web_api
                                                 // the Swagger middleware in your application's
                                                 // request pipeline, but haven't registered
                                                 // the required services in the dependency injection (DI) container. 
-            builder.Services.AddDbContext<Employer>();
+
+            // Add iur db to the depecdency injection
+            var connectionString = builder.Configuration.GetConnectionString("HR");
+            builder.Services.AddDbContext<HRDbContext>(options => options.UseSqlServer(connectionString));
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
