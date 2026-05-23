@@ -4,6 +4,7 @@ using net_core_web_api.Models.Domain;
 
 namespace net_core_web_api.Data.Configurations
 {
+    // need the "using net_core_web_api.Models.Domain;" to be able to refer to the Country class
     public class CountryEntityConfiguration : IEntityTypeConfiguration<Country>
     {
         public void Configure(EntityTypeBuilder<Country> builder)
