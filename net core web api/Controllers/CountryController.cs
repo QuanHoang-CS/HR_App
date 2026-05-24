@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using net_core_web_api.Data.Context;
 using net_core_web_api.Models.Domain;
@@ -81,16 +82,97 @@ namespace net_core_web_api.Controllers
             throw new NotImplementedException();
         }
         */
+
+        // POST: Create new Country
+        // POST: https://localhost:portnumber/api/country
         [HttpPost]
-        public IActionResult CreateCountry(string countryName, string countryCode, int countryId)
+        public IActionResult CreateCountry([FromBody] AddCountryRequestDto newCountryDto)
         {
-            throw new NotImplementedException();
+            var countryDomainModel = new Country
+            {
+                CountryId = newCountryDto.CountryId,
+                CountryName = newCountryDto.CountryName,
+                RegionId = newCountryDto.RegionId
+            };
+
+            _dbContext.Countries.Add(countryDomainModel);
+            try
+            {
+                _dbContext.SaveChanges();
+            }
+            catch(DbUpdateException ex)
+            {
+                // rootException
+                var rootException = ex.InnerException;
+                while (rootException.InnerException != null)
+                    rootException = rootException.InnerException;
+
+                Console.WriteLine($"The actual error is: {rootException.Message}");
+                //return BadRequest($"Update country with id {id} failed!");
+                return BadRequest($"The actual error is: {rootException.Message}");
+            }
+            
+
+            var countryDto = new CountryDto
+            {
+                CountryId = countryDomainModel.CountryId,
+                CountryName = countryDomainModel.CountryName,
+                RegionId = countryDomainModel.RegionId
+            };
+
+            return CreatedAtAction(nameof(GetById), new {id = countryDomainModel.CountryId}, countryDto);  //
         }
 
-        [HttpPatch]
-        public IActionResult UpdateByName(string countryName, Country newCountry)
+        [HttpPatch("id")]
+        public IActionResult UpdateSearchById(string id, [FromBody] UpdateCountryRequestDto updateCountryDto)
         {
-            throw new NotImplementedException();
+            var countryDomainModel = _dbContext.Countries.FirstOrDefault(x => x.CountryId == id);
+            /*
+            var newId = updateCountryDto.CountryId;
+
+            // Check if cliet want to update id of a record.
+            // In such case, check if the new id has length less than 3, and the new id is unique
+            // Exit early if new id is not valid.
+            // This part is not meaningful as I cannot change the primary ket id here
+            if( !string.Equals(id, newId, StringComparison.OrdinalIgnoreCase) )
+            {
+                if(newId.Length > 2)            // Invalid length
+                    return BadRequest("Invalid country id!!\n Country id must has less than 3 characters");
+
+                var countryWithDupId = _dbContext.Countries.FirstOrDefault(x => x.CountryId == newId);
+
+                if(countryWithDupId != null)    // New id not unique
+                    return BadRequest("Invalid country id!!\n Country id must be unique");
+                
+            }*/
+
+            // If we get to here, either client not want to update id, or new id is valid.
+            countryDomainModel.RegionId = updateCountryDto.RegionId;
+            countryDomainModel.CountryName = updateCountryDto.CountryName; 
+            try
+            {
+                _dbContext.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                // rootException
+                var rootException = ex.InnerException;
+                while (rootException.InnerException != null)
+                    rootException = rootException.InnerException;
+
+                Console.WriteLine($"The actual error is: {rootException.Message}");
+                //return BadRequest($"Update country with id {id} failed!");
+                return BadRequest($"The actual error is: {rootException.Message}");
+            }
+            
+
+            var countryDto = new CountryDto
+            {
+                CountryId = countryDomainModel.CountryId,
+                CountryName = countryDomainModel.CountryName,
+                RegionId = countryDomainModel.RegionId
+            };
+            return CreatedAtAction(nameof(GetById), new { id = countryDomainModel.CountryId }, countryDto);
         }
         /*
         [HttpPatch]
