@@ -21,12 +21,12 @@ namespace net_core_web_api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
             // get data from Domain Models
             // map Domain Models to DTO
             // Reruen DTO back to the client
-            var countries = _dbContext.Countries.ToList();
+            var countries = await _dbContext.Countries.ToListAsync();
             var countryDto = new List<CountryDto>();
             foreach (var country in countries) 
             {
@@ -49,9 +49,9 @@ namespace net_core_web_api.Controllers
         // Without [Route...] attribute, it will leads to error 500 since we have 2 [HttpGet] elements with the same route.
         [HttpGet]
         [Route("{id}")]
-        public IActionResult GetById(string id)
+        public async Task<IActionResult> GetById(string id)
         {
-            var country = _dbContext.Countries.FirstOrDefault(x => x.CountryId == id);
+            var country = await _dbContext.Countries.FirstOrDefaultAsync(x => x.CountryId == id);
             CountryDto countryDto;
             if(country == null)
             {
@@ -86,7 +86,7 @@ namespace net_core_web_api.Controllers
         // POST: Create new Country
         // POST: https://localhost:portnumber/api/country
         [HttpPost]
-        public IActionResult CreateCountry([FromBody] AddCountryRequestDto newCountryDto)
+        public async Task<IActionResult> CreateCountry([FromBody] AddCountryRequestDto newCountryDto)
         {
             var countryDomainModel = new Country
             {
@@ -95,10 +95,10 @@ namespace net_core_web_api.Controllers
                 RegionId = newCountryDto.RegionId
             };
 
-            _dbContext.Countries.Add(countryDomainModel);
+            await _dbContext.Countries.AddAsync(countryDomainModel);
             try
             {
-                _dbContext.SaveChanges();
+                await _dbContext.SaveChangesAsync();
             }
             catch(DbUpdateException ex)
             {
@@ -124,9 +124,9 @@ namespace net_core_web_api.Controllers
         }
 
         [HttpPatch("id")]
-        public IActionResult UpdateSearchById(string id, [FromBody] UpdateCountryRequestDto updateCountryDto)
+        public async Task<IActionResult> UpdateSearchById(string id, [FromBody] UpdateCountryRequestDto updateCountryDto)
         {
-            var countryDomainModel = _dbContext.Countries.FirstOrDefault(x => x.CountryId == id);
+            var countryDomainModel = await _dbContext.Countries.FirstOrDefaultAsync(x => x.CountryId == id);
             /*
             var newId = updateCountryDto.CountryId;
 
@@ -153,7 +153,7 @@ namespace net_core_web_api.Controllers
 
             try
             {
-                _dbContext.SaveChanges();
+                await _dbContext.SaveChangesAsync();
             }
             catch (DbUpdateException ex)
             {
@@ -178,18 +178,18 @@ namespace net_core_web_api.Controllers
         }
 
         [HttpDelete("id")]
-        public IActionResult DeleteCountryById(string countryId)
+        public async Task<IActionResult> DeleteCountryById(string countryId)
         {
-            var countryDomainModel = _dbContext.Countries.FirstOrDefault(x => x.CountryId == countryId);
+            var countryDomainModel = await _dbContext.Countries.FirstOrDefaultAsync(x => x.CountryId == countryId);
 
             if (countryDomainModel == null)
                 return NotFound($"Country with id {countryId} doesn't exist!");
 
-            _dbContext.Countries.Remove(countryDomainModel);
+            _dbContext.Countries.Remove(countryDomainModel);        // No Async for Remove()
 
             try
             {
-                _dbContext.SaveChanges();
+                await _dbContext.SaveChangesAsync();
             }
             catch (DbUpdateException ex)
             {
@@ -211,7 +211,5 @@ namespace net_core_web_api.Controllers
         {
             throw new NotImplementedException();
         }
-        
-
     }
 }
