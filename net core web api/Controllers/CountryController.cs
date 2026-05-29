@@ -149,6 +149,8 @@ namespace net_core_web_api.Controllers
             // If we get to here, either client not want to update id, or new id is valid.
             countryDomainModel.RegionId = updateCountryDto.RegionId;
             countryDomainModel.CountryName = updateCountryDto.CountryName; 
+
+
             try
             {
                 _dbContext.SaveChanges();
@@ -174,8 +176,9 @@ namespace net_core_web_api.Controllers
             };
             return CreatedAtAction(nameof(GetById), new { id = countryDomainModel.CountryId }, countryDto);
         }
+
         /*
-        [HttpPatch]
+        [HttpPatch("name")]
         public IActionResult UpdateById(int countryId, Countries newCountry)
         {
             throw new NotImplementedException();
@@ -191,20 +194,43 @@ namespace net_core_web_api.Controllers
         public IActionResult DeleteCountryByName(string countryName)
         {
             throw new NotImplementedException();
+        }*/
+
+        [HttpDelete("id")]
+        public IActionResult DeleteCountryById(string countryId)
+        {
+            var countryDomainModel = _dbContext.Countries.FirstOrDefault(x => x.CountryId == countryId);
+
+            if (countryDomainModel == null)
+                return NotFound($"Country with id {countryId} doesn't exist!");
+
+            _dbContext.Countries.Remove(countryDomainModel);
+
+            try
+            {
+                _dbContext.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            var countryDto = new CountryDto
+            {
+                CountryId = countryDomainModel.CountryId,
+                CountryName = countryDomainModel.CountryName,
+                RegionId = countryDomainModel.RegionId
+            };
+
+            return Ok(countryDto);
         }
 
-        [HttpDelete]
-        public IActionResult DeleteCountryById(int countryId)
+        [HttpDelete("name")]
+        public IActionResult DeleteCountryByName(string countryName)
         {
             throw new NotImplementedException();
         }
-
-        [HttpDelete]
-        public IActionResult DeleteCountryByCode(string countryCode)
-        {
-            throw new NotImplementedException();
-        }
-        */
+        
 
     }
 }
