@@ -177,25 +177,6 @@ namespace net_core_web_api.Controllers
             return CreatedAtAction(nameof(GetById), new { id = countryDomainModel.CountryId }, countryDto);
         }
 
-        /*
-        [HttpPatch("name")]
-        public IActionResult UpdateById(int countryId, Countries newCountry)
-        {
-            throw new NotImplementedException();
-        }
-
-        [HttpPatch]
-        public IActionResult UpdateByCode(string countryCodem, Countries newCountry)
-        {
-            throw new NotImplementedException();
-        }
-
-        [HttpDelete]
-        public IActionResult DeleteCountryByName(string countryName)
-        {
-            throw new NotImplementedException();
-        }*/
-
         [HttpDelete("id")]
         public IActionResult DeleteCountryById(string countryId)
         {
