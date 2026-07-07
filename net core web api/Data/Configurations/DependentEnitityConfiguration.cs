@@ -1,13 +1,12 @@
 ﻿using net_core_web_api.Models.Domain;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-//using Microsoft.EntityFrameworkCore;
 
 namespace net_core_web_api.Data.Configurations
 {
     public class DependentEnitityConfiguration : IEntityTypeConfiguration<Dependent>
     {
-        public void Configure(EntityTypeBuilder<Dependent> builder) {
+        public void Configure(EntityTypeBuilder<Dependent> builder)
         {
                 builder.ToTable("dependent");
 
