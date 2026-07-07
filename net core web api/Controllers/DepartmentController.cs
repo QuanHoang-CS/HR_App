@@ -18,9 +18,20 @@ namespace net_core_web_api.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetAll()
+        public async Task<ActionResult> GetAll([FromQuery] string? filterOn, int? filterQuery)
         {
-            var departments = _dbcontext.Departments.ToList();
+            // Without AsQueryable(), the call to _dbcotext.Departments will return a variable of type DbSet<Department>
+            // DbSet<T> implement the IEnumerable, if we use LINQ on deparments, it will return a IQueryable object, and require us
+            // to cast back to the DbSet<Department> type
+            var departments = _dbcontext.Departments.AsQueryable();
+
+            if (!string.IsNullOrEmpty(filterOn) && !(filterQuery is null) && filterQuery.HasValue)
+            {
+                if (string.Equals(filterOn, "LocationId", StringComparison.OrdinalIgnoreCase))
+                    departments = departments.Where(x => x.LocationId == filterQuery);
+                else
+                    return NotFound();
+            }
 
             return Ok(departments);
         }

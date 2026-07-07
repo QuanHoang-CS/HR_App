@@ -20,13 +20,25 @@ namespace net_core_web_api.Controllers
             _dbContext = dbContext;
         }
 
+        //GET ountries
+        // GET: /api/country?filterOn=Name&filterQuery=nameMatch
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] int? filterQuery)    //[FromQuery] allow us to filter out the search result
         {
             // get data from Domain Models
             // map Domain Models to DTO
             // Reruen DTO back to the client
-            var countries = await _dbContext.Countries.ToListAsync();
+            // var countries = await _dbContext.Countries.ToListAsync();
+            var countries = _dbContext.Countries.AsQueryable();
+
+            // If both filterOn and filterQuery have values
+            if( !string.IsNullOrEmpty(filterOn) && !(filterQuery is null) )
+            {
+                // if filterOn is equal to the RegionId column of our Domain Model
+                if (filterOn.Equals("RegionId", StringComparison.OrdinalIgnoreCase))
+                    // Filter with LINQ
+                    countries = countries.Where(x => x.RegionId == filterQuery);
+            }
             var countryDto = new List<CountryDto>();
             foreach (var country in countries) 
             {
