@@ -18,7 +18,7 @@ namespace net_core_web_api.Data.Context
         public DbSet<Department> Departments { get; set; }
         
         public DbSet<Dependent> Dependants { get; set; }
-        //public DbSet<Employees> Employees{ get; set; }
+        public DbSet<Employee> Employees{ get; set; }
         
         public DbSet<Job> Jobs { get; set; }
         /*
