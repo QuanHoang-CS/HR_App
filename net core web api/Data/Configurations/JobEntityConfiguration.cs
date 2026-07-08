@@ -8,10 +8,12 @@ namespace net_core_web_api.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Job> builder)
         {
+            builder.ToTable("jobs");
             builder.HasKey("JobId");
 
             builder.Property(x => x.JobId)
-                .HasColumnName("job_id");
+                .HasColumnName("job_id")
+                .IsRequired();
 
             builder.Property(x => x.JobTitle)
                 .HasColumnName("job_title")
@@ -24,8 +26,7 @@ namespace net_core_web_api.Data.Configurations
 
             builder.Property(x => x.MaxSalary)
                 .HasColumnName("max_salary")
-                .HasPrecision(8,2);
-                
+                .HasPrecision(8,2);    
         }
     }
 }
