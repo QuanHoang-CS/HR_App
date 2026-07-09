@@ -28,7 +28,8 @@ namespace net_core_web_api.Data.Configurations
                 .HasMaxLength(40);
 
             builder.Property(x => x.RegionId)
-                .HasColumnName("region_id");
+                .HasColumnName("region_id")
+                .IsRequired();
         }
     }
 }
