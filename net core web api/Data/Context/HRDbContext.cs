@@ -21,9 +21,9 @@ namespace net_core_web_api.Data.Context
         public DbSet<Employee> Employees{ get; set; }
         
         public DbSet<Job> Jobs { get; set; }
-        /*
-        public DbSet<Locations> Locations { get; set; }
-        public DbSet<Regions> Regions { get; set; }
-        */
+        
+        public DbSet<Location> Locations { get; set; }
+        //public DbSet<Regions> Regions { get; set; }
+        
     }
 }
