@@ -38,6 +38,8 @@ namespace net_core_web_api.Controllers
                 if (filterOn.Equals("RegionId", StringComparison.OrdinalIgnoreCase))
                     // Filter with LINQ
                     countries = countries.Where(x => x.RegionId == filterQuery);
+                //else if (filterOn.Equals("CountryName", StringComparison.OrdinalIgnoreCase))
+                    //countries = countries.Where(x => x.CountryName == filterQuery);
             }
             var countryDto = new List<CountryDto>();
             foreach (var country in countries) 
@@ -81,19 +83,6 @@ namespace net_core_web_api.Controllers
             
             return Ok(countryDto);
         }
-        /*
-        [HttpGet]
-        public IActionResult GetByName(string countryname)
-        {
-            throw new NotImplementedException();
-        }
-
-        [HttpGet]
-        public IActionResult GetByCode(string counttryCode)
-        {
-            throw new NotImplementedException();
-        }
-        */
 
         // POST: Create new Country
         // POST: https://localhost:portnumber/api/country

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using net_core_web_api.Data.Context;
 using net_core_web_api.Models.Domain;
 using Microsoft.AspNetCore.Http;
+using net_core_web_api.Models.DTO;
 
 namespace net_core_web_api.Controllers
 {
@@ -36,11 +37,29 @@ namespace net_core_web_api.Controllers
             return Ok(departments);
         }
 
+        // TODO: implement filtering in the future buddy ~.~
         [HttpGet("id")]
         public ActionResult GetDepartmentById(int id)
         {
             var department = _dbcontext.Departments.SingleOrDefault(x => x.DepartmentId == id);
             return Ok(department);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateDepartment(AddDepartmentRequestDto newDepartment)
+        {
+            // Create a new DepartmentDomainModel and add it to the database
+            // Remember to catch error
+            // Create a DepartmentDto from the new Department and return it for result viewing
+            var departmentDbModel = new Department
+            {
+                DepartmentId = newDepartment.DepartmentId,
+                DepartmentName = newDepartment.DepartmentName,
+                LocationId = newDepartment.LocationId,
+
+            };
+
+            return Ok();
         }
     }
 }
