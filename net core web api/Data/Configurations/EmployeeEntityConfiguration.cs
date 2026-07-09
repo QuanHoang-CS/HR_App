@@ -11,9 +11,9 @@ namespace net_core_web_api.Data.Configurations
             // Try to set a reletionship of 1:1 or 1:many but later on
             //builder.HasOne()
             builder.ToTable("employees");
-            builder.HasKey(x => x.Id);
+            builder.HasKey(x => x.EmployeeId);
 
-            builder.Property(x => x.Id)
+            builder.Property(x => x.EmployeeId)
                 .HasColumnName("employee_id")
                 .IsRequired();
 
