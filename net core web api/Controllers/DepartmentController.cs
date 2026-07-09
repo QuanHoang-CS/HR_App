@@ -51,7 +51,7 @@ namespace net_core_web_api.Controllers
             // Create a new DepartmentDomainModel and add it to the database
             // Remember to catch error
             // Create a DepartmentDto from the new Department and return it for result viewing
-            var departmentDbModel = new Department
+            var departmentDomainModel = new Department
             {
                 DepartmentId = newDepartment.DepartmentId,
                 DepartmentName = newDepartment.DepartmentName,
@@ -59,7 +59,33 @@ namespace net_core_web_api.Controllers
 
             };
 
-            return Ok();
+            try
+            {
+                await _dbcontext.AddAsync(departmentDomainModel);
+                _dbcontext.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                // Gotta read more about these exceptions
+                // rootException
+                var rootException = ex.InnerException;
+                while (rootException.InnerException != null)
+                    rootException = rootException.InnerException;
+
+                Console.WriteLine($"The actual error is: {rootException.Message}");
+                //return BadRequest($"Update country with id {id} failed!");
+                return BadRequest($"The actual error is: {rootException.Message}");
+            }
+
+            // Create new Dto and pass back for view
+            var departmentDto = new DepartmentDto
+            {
+                DepartmentId = departmentDomainModel.DepartmentId,
+                DepartmentName = departmentDomainModel.DepartmentName,
+                LocationId = departmentDomainModel.LocationId,
+            };
+
+            return CreatedAtAction(nameof(GetDepartmentById), new { id = departmentDomainModel.DepartmentId }, departmentDto);
         }
     }
 }
