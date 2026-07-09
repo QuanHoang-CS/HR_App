@@ -1,6 +1,6 @@
 ﻿namespace net_core_web_api.Models.DTO
 {
-    public class DapartmentDto
+    public class DepartmentDto
     {
         public int DepartmentId { get; set; }
         public string DepartmentName { get; set; }
