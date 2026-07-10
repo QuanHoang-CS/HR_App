@@ -16,7 +16,7 @@ namespace net_core_web_api.Data.Configurations
                 .HasColumnName("location_id")
                 .IsRequired();
 
-            builder.Property("StreetAdDress")
+            builder.Property("StreetAddress")
                 .HasColumnName("street_address")
                 .HasMaxLength(40);
 
