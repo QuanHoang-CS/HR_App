@@ -2,7 +2,8 @@
 {
     public class AddDepartmentRequestDto
     {
-        public int DepartmentId { get; set; }
+        // DepartmentId is self-incremented and cannot/shouldn't be manually entered
+        // So there's no point having it here
         public string DepartmentName { get; set; }
         public int LocationId { get; set; }
     }

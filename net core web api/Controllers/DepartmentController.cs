@@ -45,15 +45,17 @@ namespace net_core_web_api.Controllers
             return Ok(department);
         }
 
+        // The [FromBody] attribute can be ommitted in this case, since the class DepartmentController has the [ApiController] attribute
+        // which makes all complex type parameter (such as AddDepartmentRequestDto in this case) be taken from request's body
         [HttpPost]
-        public async Task<IActionResult> CreateDepartment(AddDepartmentRequestDto newDepartment)
+        public async Task<IActionResult> CreateDepartment([FromBody] AddDepartmentRequestDto newDepartment)
         {
             // Create a new DepartmentDomainModel and add it to the database
             // Remember to catch error
             // Create a DepartmentDto from the new Department and return it for result viewing
             var departmentDomainModel = new Department
             {
-                DepartmentId = newDepartment.DepartmentId,
+               // DepartmentId = newDepartment.DepartmentId,
                 DepartmentName = newDepartment.DepartmentName,
                 LocationId = newDepartment.LocationId,
 
@@ -62,7 +64,7 @@ namespace net_core_web_api.Controllers
             try
             {
                 await _dbcontext.AddAsync(departmentDomainModel);
-                _dbcontext.SaveChangesAsync();
+                await _dbcontext.SaveChangesAsync();     // Missing await here lead to CS4014 error. The write to the db doesn't happen at all
             }
             catch (DbUpdateConcurrencyException ex)
             {
@@ -78,6 +80,9 @@ namespace net_core_web_api.Controllers
             }
 
             // Create new Dto and pass back for view
+            // Note that departmentDomainModel doesn't receive an id from the requester,
+            // but after a new entry is created in the db, the db generate the id for the new department (since department key is auto incremented)
+            // and EF core write this back to our departmentDomainModel (which is of type Department)
             var departmentDto = new DepartmentDto
             {
                 DepartmentId = departmentDomainModel.DepartmentId,
@@ -85,7 +90,7 @@ namespace net_core_web_api.Controllers
                 LocationId = departmentDomainModel.LocationId,
             };
 
-            return CreatedAtAction(nameof(GetDepartmentById), new { id = departmentDomainModel.DepartmentId }, departmentDto);
+            return CreatedAtAction(nameof(GetDepartmentById), new { id = departmentDto.DepartmentId }, departmentDto);
         }
     }
 }
