@@ -39,7 +39,7 @@ namespace net_core_web_api.Controllers
 
         // TODO: implement filtering in the future buddy ~.~
         [HttpGet("id")]
-        public ActionResult GetDepartmentById(int id)
+        public ActionResult GetById(int id)
         {
             var department = _dbcontext.Departments.SingleOrDefault(x => x.DepartmentId == id);
             return Ok(department);
@@ -48,7 +48,7 @@ namespace net_core_web_api.Controllers
         // The [FromBody] attribute can be ommitted in this case, since the class DepartmentController has the [ApiController] attribute
         // which makes all complex type parameter (such as AddDepartmentRequestDto in this case) be taken from request's body
         [HttpPost]
-        public async Task<IActionResult> CreateDepartment([FromBody] AddDepartmentRequestDto newDepartment)
+        public async Task<IActionResult> Create([FromBody] AddDepartmentRequestDto newDepartment)
         {
             // Create a new DepartmentDomainModel and add it to the database
             // Remember to catch error
@@ -91,6 +91,72 @@ namespace net_core_web_api.Controllers
             };
 
             return CreatedAtAction(nameof(GetDepartmentById), new { id = departmentDto.DepartmentId }, departmentDto);
+        }
+
+        [HttpDelete("id")]
+        public async Task<IActionResult> DeleteById(int id)
+        {
+
+            // Search for the department to delete
+            var deletedDepartment = _dbcontext.Departments.FirstOrDefault(d => d.DepartmentId == id);
+                                           
+                
+            // If no department found give message
+            if(deletedDepartment == null)
+            {
+                return NotFound($"No department matches given id: \'{id}\'");
+            }
+                
+            _dbcontext.Departments.Remove(deletedDepartment);
+
+            try
+            {
+                await _dbcontext.SaveChangesAsync();
+            }
+            catch(DbUpdateException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            /*
+                * another method of executing delete in bulk, but not suite this method very well
+            await _dbcontext.Departments
+                .Where(d => (id != null && d.DepartmentId == id) || (name != null && d.DepartmentName == name)) // match either id or name
+                .ExecuteDeleteAsync();                                                                        // Better for buld delete than Remove()
+            */
+
+            var departmentDto = new DepartmentDto
+            {
+                DepartmentId = deletedDepartment.DepartmentId,
+                DepartmentName = deletedDepartment.DepartmentName,
+                LocationId = deletedDepartment.LocationId,
+            };
+
+            return Ok(departmentDto);
+        }
+        
+
+        [HttpDelete("name")]
+        public async Task<IActionResult> DeleteByName(string name)
+        {
+            var query = _dbcontext.Departments.Where(d => d.DepartmentName == name);
+
+            // List of deleted DepartmentDto
+            var deletedDepartments = await query.Select(d => new DepartmentDto
+            {
+                DepartmentId = d.DepartmentId,
+                DepartmentName = d.DepartmentName,
+                LocationId = d.LocationId,
+            }).ToListAsync();   // Will return an empty list if query return nothing
+
+            if (deletedDepartments.Count == 0)
+            {
+                return NotFound($"No Department with given name: \'{name}\'");
+            }
+
+            int deletedRows = await query.ExecuteDeleteAsync();
+
+            return Ok(deletedDepartments);
         }
     }
 }
