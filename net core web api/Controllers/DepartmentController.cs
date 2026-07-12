@@ -90,7 +90,7 @@ namespace net_core_web_api.Controllers
                 LocationId = departmentDomainModel.LocationId,
             };
 
-            return CreatedAtAction(nameof(GetDepartmentById), new { id = departmentDto.DepartmentId }, departmentDto);
+            return CreatedAtAction(nameof(GetById), new { id = departmentDto.DepartmentId }, departmentDto);
         }
 
         [HttpDelete("id")]
