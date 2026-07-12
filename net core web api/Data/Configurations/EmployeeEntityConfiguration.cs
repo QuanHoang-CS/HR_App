@@ -53,11 +53,6 @@ namespace net_core_web_api.Data.Configurations
             builder.Property(x => x.DepartmentId)
                 .HasColumnName("department_id")
                 .IsRequired();
-                
-              
-
-
-
         }
     }
 }
