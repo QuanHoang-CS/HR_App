@@ -8,34 +8,31 @@ namespace net_core_web_api.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Dependent> builder)
         {
-                builder.ToTable("dependent");
+            builder.ToTable("dependent");
 
-                builder.HasKey("Id");
+            builder.HasKey("Id");
 
-                builder.Property(x => x.Id)
-                    .HasColumnName("dependent_id");
+            builder.Property(x => x.Id)
+                .HasColumnName("dependent_id");
 
-                builder.Property(x => x.FirstName)
-                    .HasColumnName("first_name")
-                    .HasMaxLength(50)
-                    .IsRequired();
+            builder.Property(x => x.FirstName)
+                .HasColumnName("first_name")
+                .HasMaxLength(50)
+                .IsRequired();
 
-                builder.Property(x => x.LastName)
-                    .HasColumnName("lastName")
-                    .IsRequired()
-                    .HasMaxLength(50);
+            builder.Property(x => x.LastName)
+                .HasColumnName("lastName")
+                .IsRequired()
+                .HasMaxLength(50);
 
-                builder.Property(x => x.Relationship)
-                    .HasColumnName("relationship")
-                    .IsRequired()
-                    .HasMaxLength(25);
+            builder.Property(x => x.Relationship)
+                .HasColumnName("relationship")
+                .IsRequired()
+                .HasMaxLength(25);
 
-                builder.Property(x => x.EmployeeId)
-                    .HasColumnName("employee_id")
-                    .IsRequired();
-                    
-                    
-
+            builder.Property(x => x.EmployeeId)
+                .HasColumnName("employee_id")
+                .IsRequired();
         }
     }
 }
