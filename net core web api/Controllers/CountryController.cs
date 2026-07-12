@@ -87,7 +87,7 @@ namespace net_core_web_api.Controllers
         // POST: Create new Country
         // POST: https://localhost:portnumber/api/country
         [HttpPost]
-        public async Task<IActionResult> CreateCountry([FromBody] AddCountryRequestDto newCountryDto)
+        public async Task<IActionResult> Create([FromBody] AddCountryRequestDto newCountryDto)
         {
             var countryDomainModel = new Country
             {
@@ -179,14 +179,14 @@ namespace net_core_web_api.Controllers
         }
 
         [HttpDelete("id")]
-        public async Task<IActionResult> DeleteCountryById(string countryId)
+        public async Task<IActionResult> DeleteById(string countryId)
         {
-            var countryDomainModel = await _dbContext.Countries.FirstOrDefaultAsync(x => x.CountryId == countryId);
+            var deletedCountry = await _dbContext.Countries.FirstOrDefaultAsync(x => x.CountryId == countryId);
 
-            if (countryDomainModel == null)
+            if (deletedCountry == null)
                 return NotFound($"Country with id {countryId} doesn't exist!");
 
-            _dbContext.Countries.Remove(countryDomainModel);        // No Async for Remove()
+            _dbContext.Countries.Remove(deletedCountry);        // No Async for Remove()
 
             try
             {
@@ -199,18 +199,34 @@ namespace net_core_web_api.Controllers
 
             var countryDto = new CountryDto
             {
-                CountryId = countryDomainModel.CountryId,
-                CountryName = countryDomainModel.CountryName,
-                RegionId = countryDomainModel.RegionId
+                CountryId = deletedCountry.CountryId,
+                CountryName = deletedCountry.CountryName,
+                RegionId = deletedCountry.RegionId
             };
 
             return Ok(countryDto);
         }
 
         [HttpDelete("name")]
-        public IActionResult DeleteCountryByName(string countryName)
+        public async Task<IActionResult> DeleteByName(string countryName)
         {
-            throw new NotImplementedException();
+            var query = _dbContext.Countries.Where(c => c.CountryName == countryName);
+
+            var deletedCountries = query.Select(c => new CountryDto
+            {
+                CountryId = c.CountryId,
+                CountryName = c.CountryName,
+                RegionId = c.RegionId,
+            });
+
+            if(deletedCountries.Count() == 0)
+            {
+                return NotFound($"No country with given name: \'{countryName}\'");
+            }
+
+            int deletedRows = await query.ExecuteDeleteAsync();
+
+            return Ok(deletedCountries);
         }
     }
 }
