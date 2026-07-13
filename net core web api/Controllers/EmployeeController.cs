@@ -42,6 +42,33 @@ namespace net_core_web_api.Controllers
             return Ok(employeesDto);
         }
 
+        [HttpGet("id")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var employee = _dbContext.Employees.FirstOrDefault(e => e.EmployeeId == id);
+            
+            if(employee == null)
+            {
+                return NotFound($"No employee with given id: \'{id}\'");
+            }
+
+            var EmployeeDto = new EmployeeDto
+            {
+                EmployeeId = employee.EmployeeId,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Email = employee.Email,
+                PhoneNumber = employee.PhoneNumber,
+                HireDate = employee.HireDate,
+                JobId = employee.JobId,
+                Salary = employee.Salary,
+                ManagerId = employee.ManagerId,
+                DepartmentId = employee.DepartmentId,
+            };
+
+            return Ok(EmployeeDto);
+        }
+
 
     }
 }
