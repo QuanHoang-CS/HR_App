@@ -9,7 +9,8 @@ using System.Diagnostics.Metrics;
 
 namespace net_core_web_api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]")]                     // Route all methods with API attribute to api/Country. Without this, 
+                                                    // error: "Action methods on controllers annotated with ApiControllerAttribute must be attribute routed"
     [ApiController]
     public class CountryController : ControllerBase
     {
