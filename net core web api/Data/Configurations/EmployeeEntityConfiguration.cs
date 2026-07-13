@@ -47,12 +47,10 @@ namespace net_core_web_api.Data.Configurations
                 .IsRequired();
 
             builder.Property(x => x.ManagerId)
-                .HasColumnName("manager_id")
-                .IsRequired();
+                .HasColumnName("manager_id");
 
             builder.Property(x => x.DepartmentId)
-                .HasColumnName("department_id")
-                .IsRequired();
+                .HasColumnName("department_id");
         }
     }
 }
