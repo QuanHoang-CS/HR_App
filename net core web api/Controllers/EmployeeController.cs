@@ -140,6 +140,10 @@ namespace net_core_web_api.Controllers
                     return BadRequest($"The actual error is: {rootEx.Message}");
                 }
             }
+            else
+            {
+                return NotFound($"No employee with given id: \'{id}\'");
+            }
 
             return Ok(employee);
         }
