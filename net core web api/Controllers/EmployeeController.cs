@@ -71,7 +71,7 @@ namespace net_core_web_api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] UpdateEmployeeRequestDto employee)
+        public async Task<IActionResult> Create([FromBody] AddEmployeeRequestDto employee)
         {
             Employee newEmployee = new Employee
             {
