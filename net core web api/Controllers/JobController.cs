@@ -62,5 +62,39 @@ namespace net_core_web_api.Controllers
             return Ok(jobDto);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] AddJobRequestDto job)
+        {
+            var newJob = new Job
+            {
+                JobTitle = job.JobTitle,
+                MinSalary = job.MinSalary,
+                MaxSalary = job.MaxSalary,
+            };
+
+            try
+            {
+                await _dbContext.Jobs.AddAsync(newJob);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                var rootEx = ex.InnerException;
+                while(rootEx != null) 
+                    rootEx = rootEx.InnerException;
+
+                return BadRequest($"Root error is: {rootEx.Message}");
+            }
+
+            var jobDto = new JobDto
+            {
+                JobId = newJob.JobId,
+                JobTitle = newJob.JobTitle,
+                MinSalary = newJob.MinSalary,
+                MaxSalary = newJob.MaxSalary,
+            };
+            return CreatedAtAction(nameof(GetById), new { id = newJob.JobId }, jobDto);
+        }
+
     }
 }
