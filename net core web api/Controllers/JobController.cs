@@ -42,26 +42,23 @@ namespace net_core_web_api.Controllers
 
         
         [HttpGet("id")]
-        public async Task<IActionResult> GetJobById(int id)
+        public async Task<IActionResult> GetById([FromQuery] int id)
         {
-            var job = await _dbContext.Jobs.FirstOrDefaultAsync(x => x.JobId == id);  
-            var jobDto = new List<JobDto>();
-
+            var job = await _dbContext.Jobs.FirstOrDefaultAsync(x => x.JobId == id);
+           
             if(job == null)
             {
                 return NotFound($"Job with Id \"{id}\" not found !");
             }
-            else
+
+            var jobDto = new JobDto()
             {
-                var newJob = new JobDto()
-                {
-                    JobId = job.JobId,
-                    JobTitle = job.JobTitle,
-                    MaxSalary = job.MaxSalary,
-                    MinSalary = job.MinSalary,
-                };
-                jobDto.Add(newJob);
-            }
+                JobId = job.JobId,
+                JobTitle = job.JobTitle,
+                MaxSalary = job.MaxSalary,
+                MinSalary = job.MinSalary,
+            };
+                     
             return Ok(jobDto);
         }
 
