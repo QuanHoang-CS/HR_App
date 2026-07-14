@@ -3,6 +3,7 @@ using net_core_web_api.Data.Context;
 using net_core_web_api.Models.DTO;
 using net_core_web_api.Models.Domain;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace net_core_web_api.Controllers
 {
@@ -95,6 +96,40 @@ namespace net_core_web_api.Controllers
             };
             return CreatedAtAction(nameof(GetById), new { id = newJob.JobId }, jobDto);
         }
+        [HttpDelete]
+        public async Task<IActionResult> DeleteById([FromQuery] int id)
+        {
+            var deletedJob = await _dbContext.Jobs.FirstOrDefaultAsync(j => j.JobId == id);
 
+            if(deletedJob == null)
+            {
+                return NotFound($"No job with id: \'{id}\' found.");
+            }
+
+            try
+            {
+                _dbContext.Jobs.Remove(deletedJob);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                var rootEx = ex.InnerException;
+
+                while(rootEx != null && rootEx.InnerException != null)
+                    rootEx = rootEx.InnerException;
+
+                return BadRequest($"The root exception is: {rootEx.Message}");
+            }
+
+            JobDto jobDto = new JobDto
+            {
+                JobId = deletedJob.JobId,
+                JobTitle = deletedJob.JobTitle,
+                MinSalary = deletedJob.MinSalary,
+                MaxSalary = deletedJob.MaxSalary,
+            };
+
+            return Ok(jobDto);
+        }
     }
 }
