@@ -43,6 +43,7 @@ namespace net_core_web_api.Controllers
             return Ok(dependentDtoList);
         }
 
+
         [HttpGet("dependentId")]
         public async Task<IActionResult> GetByDependentId([FromQuery] int id)
         {
@@ -64,6 +65,7 @@ namespace net_core_web_api.Controllers
 
             return Ok(dependentDto);
         }
+
 
         [HttpGet("employeeId")]
         public async Task<IActionResult> GetByEmployeeId(int id)
@@ -95,16 +97,85 @@ namespace net_core_web_api.Controllers
             return Ok(dependentDtoList);
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] AddDependentRequestDto dependentDto)
+        {
+            return Ok();
+        }
+
+
         [HttpDelete("dependentId")]
         public async Task<IActionResult> deleteByDependentId([FromQuery] int id)
         {
-            throw new NotImplementedException();
+            var deletedDependent = await _dbContext.Dependents.FirstOrDefaultAsync(d => d.Id == id);
+
+            if(deletedDependent == null)
+            {
+                return NotFound($"No dependent with id: \'{id}\' found");
+            }
+
+            try
+            {
+                _dbContext.Dependents.Remove(deletedDependent);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                var rootEx = ex.InnerException;
+                if(rootEx != null &&  rootEx.InnerException != null)
+                    rootEx = rootEx.InnerException;
+
+                return BadRequest($"The root error is: {rootEx.Message}");
+            }
+
+            var deletedDependentDto = new DependentDto
+            {
+                Id = deletedDependent.Id,
+                FirstName = deletedDependent.FirstName,
+                LastName = deletedDependent.LastName,
+                Relationship = deletedDependent.Relationship,
+                EmployeeId = deletedDependent.EmployeeId,
+            };
+
+            return Ok(deletedDependentDto);
         }
 
-        [HttpDelete("EmployeeId")]
+
+        [HttpDelete("employeeId")]
         public async Task<IActionResult> deleteByEmployeeId([FromQuery] int id)
         {
-            throw new NotImplementedException();
+            var deletedDependent = await _dbContext.Dependents.FirstOrDefaultAsync(d => d.Id == id);
+
+            if(deletedDependent == null)
+            {
+                return NotFound($"No dependet with employee id: \'{id}\' found");
+            }
+
+            try
+            {
+                _dbContext.Dependents.Remove(deletedDependent);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                var rootEx = ex.InnerException;
+                while(rootEx != null && rootEx.InnerException != null)
+                    rootEx = rootEx.InnerException;
+
+                return BadRequest($"Root error is: {rootEx.Message}");
+            }
+
+            var deletedDependentDto = new DependentDto
+            {
+                Id = deletedDependent.Id,
+                FirstName = deletedDependent.FirstName,
+                LastName = deletedDependent.LastName,
+                Relationship = deletedDependent.Relationship,
+                EmployeeId = deletedDependent.EmployeeId,
+            };
+
+            return Ok(deletedDependentDto);
         }
 
 
