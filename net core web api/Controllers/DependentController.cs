@@ -99,9 +99,40 @@ namespace net_core_web_api.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] AddDependentRequestDto dependentDto)
+        public async Task<IActionResult> Create([FromBody] AddDependentRequestDto dependent)
         {
-            return Ok();
+            var newDependent = new Dependent
+            {
+                FirstName = dependent.FirstName,
+                LastName = dependent.LastName,
+                Relationship = dependent.Relationship,
+                EmployeeId = dependent.EmployeeId,
+            };
+
+            try
+            {
+                await _dbContext.Dependents.AddAsync(newDependent);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                var rootEx = ex.InnerException;
+                while (rootEx != null && rootEx.InnerException != null)
+                    rootEx = rootEx.InnerException;
+
+                return BadRequest($"Root error is: {rootEx.Message}");
+            }
+
+            var dependentDto = new DependentDto
+            {
+                Id = newDependent.Id,
+                FirstName = newDependent.FirstName,
+                LastName = newDependent.LastName,
+                Relationship = newDependent.Relationship,
+                EmployeeId = newDependent.EmployeeId,
+            };
+
+            return CreatedAtAction(nameof(GetByDependentId), new {id = newDependent.Id}, dependentDto);
         }
 
 
