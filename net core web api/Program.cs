@@ -16,7 +16,7 @@ namespace net_core_web_api
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
             //builder.Services.AddEndpointsApiExplorer(); // Old methods in previous .NET that's no longer included in ther template.
-                                                        // what does it do?
+                                                          // what does it do?
 
 
             builder.Services.AddSwaggerGen();   // This line was added by me for Swagger
@@ -29,10 +29,18 @@ namespace net_core_web_api
                                                 // request pipeline, but haven't registered
                                                 // the required services in the dependency injection (DI) container. 
 
-            // Add iur db to the depecdency injection
+            // Add your db to the depecdency injection
             var connectionString = builder.Configuration.GetConnectionString("HR");
             builder.Services.AddDbContext<HRDbContext>(options => options.UseSqlServer(connectionString));
+            
+            /*
+            builder.Services.AddSession(options =>
+            {
+                options.Cookie.IsEssential = true;
+            });
 
+            //builder.Configuration.
+            */
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -46,7 +54,6 @@ namespace net_core_web_api
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
