@@ -21,7 +21,8 @@ namespace net_core_web_api.Controllers
             _dbContext = dbContext;
         }
 
-        //GET ountries
+
+        //GET countries
         // GET: /api/country?filterOn=Name&filterQuery=nameMatch
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] int? filterQuery)    //[FromQuery] allow us to filter out the search result
@@ -58,6 +59,7 @@ namespace net_core_web_api.Controllers
             return Ok(countryDto);
         }
 
+
         // GET: https://localhost:portnumber/api/Country/{id}
         // When we pass an id "{id}" after the urll: https://localhost:portnumber/api/Country/:, the inputed id will be mapped
         // to the input parameter of GetById()
@@ -84,6 +86,7 @@ namespace net_core_web_api.Controllers
             
             return Ok(countryDto);
         }
+
 
         // POST: Create new Country
         // POST: https://localhost:portnumber/api/country
@@ -124,6 +127,7 @@ namespace net_core_web_api.Controllers
 
             return CreatedAtAction(nameof(GetById), new {id = countryDomainModel.CountryId}, countryDto);  //
         }
+
 
         [HttpPatch("id")]
         public async Task<IActionResult> UpdateSearchById(string id, [FromBody] UpdateCountryRequestDto updateCountryDto)
@@ -179,6 +183,7 @@ namespace net_core_web_api.Controllers
             return CreatedAtAction(nameof(GetById), new { id = countryDomainModel.CountryId }, countryDto);
         }
 
+
         [HttpDelete("id")]
         public async Task<IActionResult> DeleteById(string countryId)
         {
@@ -207,6 +212,7 @@ namespace net_core_web_api.Controllers
 
             return Ok(countryDto);
         }
+
 
         [HttpDelete("name")]
         public async Task<IActionResult> DeleteByName(string countryName)
