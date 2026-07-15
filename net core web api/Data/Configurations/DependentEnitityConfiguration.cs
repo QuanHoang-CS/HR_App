@@ -8,7 +8,7 @@ namespace net_core_web_api.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Dependent> builder)
         {
-            builder.ToTable("dependent");
+            builder.ToTable("dependents");
 
             builder.HasKey("Id");
 
@@ -21,7 +21,7 @@ namespace net_core_web_api.Data.Configurations
                 .IsRequired();
 
             builder.Property(x => x.LastName)
-                .HasColumnName("lastName")
+                .HasColumnName("last_name")
                 .IsRequired()
                 .HasMaxLength(50);
 
