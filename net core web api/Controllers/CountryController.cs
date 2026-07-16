@@ -24,7 +24,7 @@ namespace net_core_web_api.Controllers
 
         //GET countries
         // GET: /api/country?filterOn=Name&filterQuery=nameMatch
-        [HttpGet]
+        [HttpGet(Name="GetAllCountry")]
         public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] int? filterQuery)    //[FromQuery] allow us to filter out the search result
         {
             // get data from Domain Models
@@ -64,7 +64,7 @@ namespace net_core_web_api.Controllers
         // When we pass an id "{id}" after the urll: https://localhost:portnumber/api/Country/:, the inputed id will be mapped
         // to the input parameter of GetById()
         // Without [Route...] attribute, it will leads to error 500 since we have 2 [HttpGet] elements with the same route.
-        [HttpGet]
+        [HttpGet(Name= "GetCountryById")]
         [Route("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
@@ -90,7 +90,7 @@ namespace net_core_web_api.Controllers
 
         // POST: Create new Country
         // POST: https://localhost:portnumber/api/country
-        [HttpPost]
+        [HttpPost(Name="CreateCountry")]
         public async Task<IActionResult> Create([FromBody] AddCountryRequestDto newCountryDto)
         {
             var countryDomainModel = new Country
