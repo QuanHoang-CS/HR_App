@@ -24,7 +24,7 @@ namespace MyApp.API.Controllers
 
         //GET countries
         // GET: /api/country?filterOn=Name&filterQuery=nameMatch
-        [HttpGet]
+        [HttpGet(Name ="GetAllCountries")]
         public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] int? filterQuery)    //[FromQuery] allow us to filter out the search result
         {
             // get data from Domain Models
