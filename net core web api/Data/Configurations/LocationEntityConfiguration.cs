@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using net_core_web_api.Models.Domain;
+using MyApp.API.Models.Domain;
 
 
-namespace net_core_web_api.Data.Configurations
+namespace MyApp.API.Data.Configurations
 {
     public class LocationEntityConfiguration : IEntityTypeConfiguration<Location>
     {

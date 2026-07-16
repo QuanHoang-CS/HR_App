@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace net_core_web_api.Models.Domain
+namespace MyApp.API.Models.Domain
 {
 
     /*

@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using net_core_web_api.Data.Context;
-using net_core_web_api.Models.DTO;
-using net_core_web_api.Models.Domain;
+using MyApp.API.Data.Context;
+using MyApp.API.Models.DTO;
+using MyApp.API.Models.Domain;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 
-namespace net_core_web_api.Controllers
+namespace MyApp.API.Controllers
 {
     [Route("api/[Controller]")]
     [ApiController]

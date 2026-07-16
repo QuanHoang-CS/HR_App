@@ -1,8 +1,8 @@
 
 using Microsoft.EntityFrameworkCore;
-using net_core_web_api.Data.Context;
+using MyApp.API.Data.Context;
 
-namespace net_core_web_api
+namespace MyApp.API
 {
     public class Program
     {

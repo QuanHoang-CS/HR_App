@@ -1,8 +1,8 @@
-﻿using net_core_web_api.Models.Domain;
+﻿using MyApp.API.Models.Domain;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 
-namespace net_core_web_api.Data.Configurations
+namespace MyApp.API.Data.Configurations
 {
     public class DependentEnitityConfiguration : IEntityTypeConfiguration<Dependent>
     {

@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using net_core_web_api.Models.Domain;
+using MyApp.API.Models.Domain;
 
-namespace net_core_web_api.Data.Configurations
+namespace MyApp.API.Data.Configurations
 {
-    // need the "using net_core_web_api.Models.Domain;" to be able to refer to the Country class
+    // need the "using MyApp.API.Models.Domain;" to be able to refer to the Country class
     public class CountryEntityConfiguration : IEntityTypeConfiguration<Country>
     {
         public void Configure(EntityTypeBuilder<Country> builder)

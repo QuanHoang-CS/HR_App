@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
-using net_core_web_api.Data.Context;
-using net_core_web_api.Models.Domain;
-using net_core_web_api.Models.DTO;
+using MyApp.API.Data.Context;
+using MyApp.API.Models.Domain;
+using MyApp.API.Models.DTO;
 using System.Diagnostics.Metrics;
 
-namespace net_core_web_api.Controllers
+namespace MyApp.API.Controllers
 {
     [Route("api/[controller]")]                     // Route all methods with API attribute to api/Country. Without this, 
                                                     // error: "Action methods on controllers annotated with ApiControllerAttribute must be attribute routed"
@@ -24,7 +24,7 @@ namespace net_core_web_api.Controllers
 
         //GET countries
         // GET: /api/country?filterOn=Name&filterQuery=nameMatch
-        [HttpGet(Name="GetAllCountry")]
+        [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] int? filterQuery)    //[FromQuery] allow us to filter out the search result
         {
             // get data from Domain Models
@@ -64,7 +64,7 @@ namespace net_core_web_api.Controllers
         // When we pass an id "{id}" after the urll: https://localhost:portnumber/api/Country/:, the inputed id will be mapped
         // to the input parameter of GetById()
         // Without [Route...] attribute, it will leads to error 500 since we have 2 [HttpGet] elements with the same route.
-        [HttpGet(Name= "GetCountryById")]
+        [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
@@ -90,7 +90,7 @@ namespace net_core_web_api.Controllers
 
         // POST: Create new Country
         // POST: https://localhost:portnumber/api/country
-        [HttpPost(Name="CreateCountry")]
+        [HttpPost]
         public async Task<IActionResult> Create([FromBody] AddCountryRequestDto newCountryDto)
         {
             var countryDomainModel = new Country

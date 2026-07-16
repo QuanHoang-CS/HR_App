@@ -1,4 +1,4 @@
-namespace net_core_web_api
+namespace MyApp.API
 {
     public class WeatherForecast
     {

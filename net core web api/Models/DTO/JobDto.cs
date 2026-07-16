@@ -1,4 +1,4 @@
-﻿namespace net_core_web_api.Models.DTO
+﻿namespace MyApp.API.Models.DTO
 {
     public class JobDto
     {

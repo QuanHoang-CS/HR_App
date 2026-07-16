@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace net_core_web_api.Models.Domain
+namespace MyApp.API.Models.Domain
 {
     public class Department
     {

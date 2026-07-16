@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using net_core_web_api.Models.Domain;
+using MyApp.API.Models.Domain;
 
-namespace net_core_web_api.Data.Context
+namespace MyApp.API.Data.Context
 {
     public class HRDbContext : DbContext
     {

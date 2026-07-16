@@ -1,4 +1,4 @@
-﻿namespace net_core_web_api.Models.Domain
+﻿namespace MyApp.API.Models.Domain
 
 {
     public class Dependent
