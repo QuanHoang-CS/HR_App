@@ -5,7 +5,7 @@ namespace MyApp.API.Data.Context
 {
     public class HRDbContext : DbContext
     {
-        public HRDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
+        public HRDbContext(DbContextOptions<HRDbContext> dbContextOptions) : base(dbContextOptions)
         {
             
         }
