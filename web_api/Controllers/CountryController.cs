@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
@@ -12,6 +13,7 @@ namespace MyApp.API.Controllers
     [Route("api/[controller]")]                     // Route all methods with API attribute to api/Country. Without this, 
                                                     // error: "Action methods on controllers annotated with ApiControllerAttribute must be attribute routed"
     [ApiController]
+    [Authorize]
     public class CountryController : ControllerBase
     {
         private readonly HRDbContext _dbContext;

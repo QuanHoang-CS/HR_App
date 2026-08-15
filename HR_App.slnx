@@ -1,3 +1,12 @@
 <Solution>
+  <Project Path="MyApp.Client/myapp.client.client/myapp.client.client.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="MyApp.Client/MyApp.Client.Server/MyApp.Client.Server.csproj" Id="957be32e-1595-4044-a3c4-7570ee12ce07" />
+  <Project Path="MyApp.clientt/myapp.clientt.esproj">
+    <Build />
+    <Deploy />
+  </Project>
   <Project Path="web_api/MyApp.API.csproj" />
 </Solution>
