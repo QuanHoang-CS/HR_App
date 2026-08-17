@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using MyApp.API.Data.Context;
 using MyApp.API.Data.Identity;
 using MyApp.API.Models.Identity;
+using MyApp.API.Services;
 using System.Text;
 
 namespace MyApp.API
@@ -44,6 +45,7 @@ namespace MyApp.API
 
             builder.Services.AddDbContext<HRDbContext>(options => options.UseSqlServer(connectionStringToHR));
             builder.Services.AddDbContext<ApplicationIdentityDbContext>(options => options.UseSqlServer(connectionStringToRole));
+            builder.Services.AddScoped<IJwtService, JwtService>();
 
             builder.Services.AddIdentityCore<ApplicationUser>()
                             .AddRoles<IdentityRole>()
