@@ -180,7 +180,9 @@ Endpoints can be restricted based on a user's role.
 
 For example:
 
+```
 [Authorize(Roles = "Admin")]
+```
 
 Only users with the Admin role can access the endpoint.
 
