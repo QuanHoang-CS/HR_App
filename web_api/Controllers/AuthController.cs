@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyApp.API.Data.Context;
 using MyApp.API.Models.DTO;
 using MyApp.API.Models.Identity;
-using MyApp.API.Services;
+using MyApp.API.Repositories;
 
 namespace MyApp.API.Controllers
 {
@@ -21,10 +21,11 @@ namespace MyApp.API.Controllers
             _dbContext = dbContext;
             _jwtService = jwtService;
         }
+
+
         // TODO: Split the creating of role to another API endpoint
         // POST: /api/Auth/Register
-        [HttpPost(Name = "Create User")]
-        [Route("Register")]
+        [HttpPost("Register", Name = "Create User")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequest)
         {
             var appUser = new ApplicationUser
@@ -57,9 +58,10 @@ namespace MyApp.API.Controllers
             return Ok("User was registered!");
         }
 
+
         // POST: api/auth/login
-        [HttpPost(Name = "Login")]
-        [Route("Login")]
+        // TODO: Implementing Login
+        [HttpPost("Login", Name = "Login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequest)
         {
             var user = await _userManager.FindByEmailAsync(loginRequest.UserName);
@@ -76,13 +78,7 @@ namespace MyApp.API.Controllers
                 return Unauthorized("Username or password incorrect");
             }
             
-            var roles = await _userManager.GetRolesAsync(user);
-            var token;
-            if (roles != null)
-            {
-                var token = _jwtService.CreateTokenAsync(user);
-            }
-               
+            var token = _jwtService.CreateTokenAsync(user);
 
             return Ok(new { token });
         }
