@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using MyApp.API.Data.Context;
 using MyApp.API.Data.Identity;
 using MyApp.API.Models.Identity;
+using MyApp.API.Repositories;
 using MyApp.API.Services;
 using System.Text;
 
@@ -61,7 +62,9 @@ namespace MyApp.API
                 options.Password.RequireUppercase = true;
                 options.Password.RequiredLength = 7;
                 options.Password.RequiredUniqueChars = 1;
-            });   
+            }); 
+            
+           
             /*
             builder.Services.AddSession(options =>
             {
