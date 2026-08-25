@@ -1,6 +1,6 @@
 ﻿using MyApp.API.Models.Identity;
 
-namespace MyApp.API.Services
+namespace MyApp.API.Repositories
 {
     public interface IJwtService
     {
